@@ -1,0 +1,2 @@
+# mlops_project_2022_preventive_maintenance
+MLops project for datascientest training
