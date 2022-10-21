@@ -6,10 +6,13 @@ from scipy import signal
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-class FeaturesExtraction:
-    def __init__(self):
-        self.float_sampling_rate = 20000 #Hz
 
+
+class FeaturesExtraction:
+    def __init__(self, logger):
+        self.float_sampling_rate = 20000 #Hz
+        self.logger = logger
+        
     def read_file(self,file_path) :
         try :
                return pd.read_csv(file_path,
@@ -17,7 +20,7 @@ class FeaturesExtraction:
                               header=None,
                               names=['Bearing1', 'Bearing2', 'Bearing3', 'Bearing4'])
         except Exception as e:
-            print(e)
+            self.logger.error(f'{e}')
 
     def time_signal_to_frequency_signal(self,serie_amplitude):
         """
@@ -37,7 +40,7 @@ class FeaturesExtraction:
             return (list_amplitude_oneside,list_frequencies_oneside)
 
         except Exception as e:
-            print(e)
+            self.logger.error(f'{e}')
 
     
     def transform_raw_file_to_frequency_df(self,path_raw_file):
@@ -60,25 +63,33 @@ class FeaturesExtraction:
             return df_output
 
         except Exception as e:
-            print(e)
+            self.logger.error(f'{e}')
 
             
 class BuildModel:
-    def __init__(self):
-        pass
+    def __init__(self, logger):
+        self.logger = logger
 
     def build_train_dataframe(self,path_to_files):
         """
         Build a train dataframe from raw txt file 
         """
-        path_to_files = Path(path_to_files)
-        list_train_files = list(path_to_files.glob('*'))
-        df_train = pd.DataFrame()
-        Features_Extraction = FeaturesExtraction()
-        for file_raw in list_train_files :
-            df_temp = Features_Extraction.transform_raw_file_to_frequency_df(file_raw)
-            df_train = df_train.append(df_temp)
-        return df_train
+        try :
+            self.logger.info(f"Looking for training files")
+            path_to_files = Path(path_to_files)
+            list_train_files = list(path_to_files.glob('*'))
+            self.logger.info(f"{len(list_train_files)} training files available")
+            df_train = pd.DataFrame()
+            self.logger.info(f"Extracting features")
+            Features_Extraction = FeaturesExtraction(self.logger)
+            for file_raw in list_train_files :
+                df_temp = Features_Extraction.transform_raw_file_to_frequency_df(file_raw)
+                df_train = df_train.append(df_temp)
+            self.logger.info(f"Train dataframe ready")
+            return df_train
+        
+        except Exception as e:
+            self.logger.error(f'{e}')
 
     def build_target_dataframe(self):
         """
