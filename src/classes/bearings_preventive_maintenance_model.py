@@ -5,7 +5,7 @@ import pandas as pd
 from scipy import signal
 import matplotlib.pyplot as plt
 from pathlib import Path
-
+from datetime import datetime
 
 
 class FeaturesExtraction:
@@ -58,8 +58,17 @@ class FeaturesExtraction:
                 dictionary = {list_freq_columns_name[len_index]: array_amplitude[len_index] for len_index in range(len(list_freq_columns_name))}
                 df_temp = pd.DataFrame(dictionary, index=[0])
                 df_output = pd.concat([df_output,df_temp], axis=1)
-
-            df_output.insert(0, "file_id", path_raw_file.parts[-1])
+                
+            str_file_name = path_raw_file.parts[-1]
+            df_output.insert(0, "file_id", str_file_name)
+            tuple_split_date = str_file_name.split('.')
+            str_datetime = str(datetime(year=int(tuple_split_date[0]),
+                                        month=int(tuple_split_date[1]),
+                                        day=int(tuple_split_date[2]),
+                                        hour=int(tuple_split_date[3]),
+                                        minute=int(tuple_split_date[4]),
+                                        second=int(tuple_split_date[5])))
+            df_output.insert(1, "date", str_datetime)
             return df_output
 
         except Exception as e:
@@ -85,16 +94,15 @@ class BuildModel:
             for file_raw in list_train_files :
                 df_temp = Features_Extraction.transform_raw_file_to_frequency_df(file_raw)
                 df_train = df_train.append(df_temp)
+            df_train = df_train.sort_values(by="date", ascending=False)
+            df_train.insert(2, "cycle_before_break", range(df_train.shape[0]))
+                 
             self.logger.info(f"Train dataframe ready")
             return df_train
         
         except Exception as e:
             self.logger.error(f'{e}')
 
-    def build_target_dataframe(self):
-        """
-        """
-        pass
 
     def model_pipeline(self):
         pass
