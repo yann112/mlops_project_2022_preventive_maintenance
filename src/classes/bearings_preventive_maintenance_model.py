@@ -7,10 +7,11 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from datetime import datetime
 # import autosklearn
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
 from autosklearn.regression import AutoSklearnRegressor
-
+from sklearn.preprocessing import RobustScaler
+from sklearn.pipeline import make_pipeline
 
 class FeaturesExtraction:
     def __init__(self, logger):
@@ -108,19 +109,24 @@ class BuildModel:
             self.logger.error(f'{e}')
 
 
-    def build_automl_model(self, train_dataframe, label_dataframe):
-        try : 
+    def build_automl_model(self, train_dataframe, label_dataframe, training_time):
+        try :
+            self.logger.info(f"training the automl model for {training_time} secondes") 
             X = pd.read_csv(train_dataframe, index_col="file_id")
             y = pd.read_csv(label_dataframe, index_col="file_id")
             X_train, X_test, y_train, y_test = \
                 train_test_split(X, y, random_state=1)
+            scaler = RobustScaler()
             automl = AutoSklearnRegressor(
-                        time_left_for_this_task=120,
-                        per_run_time_limit=30,
+                        time_left_for_this_task=training_time,
                     )
-            automl.fit(X_train, y_train)
-            y_hat = automl.predict(X_test)
-            self.logger.info(f"rmse : {mean_squared_error(y_test, y_hat)}")
+            pipeline = make_pipeline(scaler, automl)
+            pipeline.fit(X_train, y_train)
+            y_hat = pipeline.predict(X_test)
+            self.logger.info(f"mean_absolute_error: {mean_absolute_error(y_test, y_hat)}")
+            
+            return pipeline
         
         except Exception as e:
             self.logger.error(f'{e}')
+

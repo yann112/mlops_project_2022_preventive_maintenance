@@ -21,7 +21,7 @@ from bearings_preventive_maintenance_model import BuildModel
 
 
 ###logger###
-logger = logging.getLogger('test_train_df')
+logger = logging.getLogger('train_df')
 logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
@@ -35,7 +35,7 @@ if __name__ == "__main__":
         build_model = BuildModel(logger)
         train_dataframe = input_path / 'df_train.csv'
         label_dataframe = input_path / 'df_train_label.csv'
-        model = build_model.build_automl_model(train_dataframe, label_dataframe, training_time=120)
+        model = build_model.build_automl_model(train_dataframe, label_dataframe, training_time=3600)
         with open(output_path / 'model', 'wb') as f:
             pickle.dump(model, f, pickle.HIGHEST_PROTOCOL)
             
