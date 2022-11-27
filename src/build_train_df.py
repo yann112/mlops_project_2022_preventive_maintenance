@@ -2,6 +2,8 @@
 from pathlib import Path
 import sys
 import logging
+import time
+import os
 
 ###path###
 root_path = Path(__file__).parents[2]
@@ -12,27 +14,35 @@ output_path = root_path / Path("data/train")
 output_path.mkdir(parents=True, exist_ok=True)
 classes_path = root_path / 'mlops_project_2022_preventive_maintenance' / 'src' / 'classes'
 sys.path.append(str(classes_path))
-root_path = Path(__file__).parents[2]
+
 
 ###logger###
-logger = logging.getLogger('test_train_df')
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger('build_train_df')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger.setLevel(logging.INFO)
+
+FileOutputHandler = logging.FileHandler(logs_path / 'build_train_df.log')
+FileOutputHandler.setFormatter(formatter)
+logger.addHandler(FileOutputHandler)
+
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 ###import###
 from bearings_preventive_maintenance_model import BuildModel
 
-    
-if __name__ == "__main__":
+def main() :
+    timestr = time.strftime("%Y%m%d-%H%M%S")
     build_model = BuildModel(logger)
     df_train = build_model.build_train_dataframe(input_path)
     # df_train.to_json(output_path / 'df_train.json', orient="split", index=False)    
-    df_train.drop(["cycle_before_break","date"], axis=1).to_csv(output_path/ 'df_train.csv', index=False)
-    df_train[["file_id", "cycle_before_break"]].to_csv(output_path/ 'df_train_label.csv', index=False)
+    df_train.drop(["cycle_before_break","date"], axis=1).to_csv(output_path/ f'df_train_{timestr}.csv', index=False)
+    df_train[["file_id", "cycle_before_break"]].to_csv(output_path/ f'df_train_label_{timestr}.csv', index=False)   
+    
+if __name__ == "__main__":
+    main()
 
 
 

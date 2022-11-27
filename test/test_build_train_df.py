@@ -21,18 +21,26 @@ from bearings_preventive_maintenance_model import BuildModel
 
 
 ###logger###
-logger = logging.getLogger('test_train_df')
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger('test_build_train_df')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger.setLevel(logging.INFO)
+
+FileOutputHandler = logging.FileHandler(logs_path / 'test_build_train_df.log')
+FileOutputHandler.setFormatter(formatter)
+logger.addHandler(FileOutputHandler)
+
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-
-if __name__ == "__main__":
+def main():
     build_model = BuildModel(logger)
     df_train = build_model.build_train_dataframe(input_path)
     # df_train.to_json(output_path / 'df_train.json', orient="split", index=False)
     df_train.drop(["cycle_before_break","date"], axis=1).to_csv(output_path/ 'df_train.csv', index=False)
     df_train[["file_id", "cycle_before_break"]].to_csv(output_path/ 'df_train_label.csv', index=False)
+    
+
+if __name__ == "__main__":
+    main()

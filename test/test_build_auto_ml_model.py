@@ -20,19 +20,26 @@ from bearings_preventive_maintenance_model import BuildModel
 
 
 ###logger###
-logger = logging.getLogger('test_train_df')
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger('test_build_auto_ml_model')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger.setLevel(logging.INFO)
+
+FileOutputHandler = logging.FileHandler(logs_path / 'test_build_auto_ml_model.log')
+FileOutputHandler.setFormatter(formatter)
+logger.addHandler(FileOutputHandler)
+
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
-formatter = logging.Formatter('[%(levelname)s] [%(asctime)s:%(name)s] %(message)s')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-
-if __name__ == "__main__":
+def main():
     build_model = BuildModel(logger)
     train_dataframe = input_path / 'df_train.csv'
     label_dataframe = input_path / 'df_train_label.csv'
     model = build_model.build_automl_model(train_dataframe, label_dataframe, training_time=120)
     with open(output_path / 'model', 'wb') as f:
         pickle.dump(model, f, pickle.HIGHEST_PROTOCOL)
+    
+if __name__ == "__main__":
+    main()

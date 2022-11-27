@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import numpy as np
-from scipy.fft import fft
+from scipy.fft import rfft, rfftfreq
 import pandas as pd
 from scipy import signal
 import matplotlib.pyplot as plt
@@ -33,16 +33,15 @@ class FeaturesExtraction:
         using Fast Fourier Transform
         """
         try :
+            
             int_length_data = serie_amplitude.shape[0]
-            list_of_frequencies =  list((1/(self.float_sampling_rate * int_length_data)) * np.arange(int_length_data))
-            list_fft_complex_coef = fft(serie_amplitude.to_numpy())
-            list_fft_amplitudes = np.abs(list_fft_complex_coef)
-            #the power spectrum is symetrical get only the positive part
-            int_oneside = int_length_data//2
-            list_frequencies_oneside = list_of_frequencies[:int_oneside]
-            list_amplitude_oneside = list_fft_amplitudes[:int_oneside]
-            serie_amplitude
-            return (list_amplitude_oneside,list_frequencies_oneside)
+            window = signal.windows.hann(int_length_data)
+            list_frequencies_oneside = rfftfreq(int_length_data, 1 / self.float_sampling_rate)
+            list_fft_complex_coef_oneside = rfft(serie_amplitude.to_numpy() * window)
+            #2 because oneside sqrt(1.5) for hann window
+            list_fft_amplitudes = 2 * np.abs(list_fft_complex_coef_oneside) / np.sqrt(1.50)
+
+            return (list_fft_amplitudes,list_frequencies_oneside)
 
         except Exception as e:
             self.logger.error(f'{e}')
@@ -53,8 +52,9 @@ class FeaturesExtraction:
         Transform a raw temporal data file to a pandas dataframe 
         with column named like : bearing"x"_frequency.
         """
-        try : 
+        try :
             path_raw_file = Path(path_raw_file)
+            self.logger.info(f'transforming raw file to frequencies : {file_path.name}') 
             raw_df = self.read_file(path_raw_file)
             df_output = pd.DataFrame()
             for col_name in raw_df.columns:
@@ -89,8 +89,9 @@ class BuildModel:
         Build a train dataframe from raw txt file 
         """
         try :
-            self.logger.info(f"Looking for training files")
+            
             path_to_files = Path(path_to_files)
+            self.logger.info(f"Looking for training files in {path_to_files.name}")
             list_train_files = list(path_to_files.glob('*'))
             self.logger.info(f"{len(list_train_files)} training files available")
             df_train = pd.DataFrame()
