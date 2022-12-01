@@ -33,12 +33,12 @@ class FeaturesExtraction:
         using Fast Fourier Transform
         """
         try :
-            
+            serie_amplitude = serie_amplitude.head(20000)
             int_length_data = serie_amplitude.shape[0]
             window = signal.windows.hann(int_length_data)
             list_frequencies_oneside = rfftfreq(int_length_data, 1 / self.float_sampling_rate)
             list_fft_complex_coef_oneside = rfft(serie_amplitude.to_numpy() * window)
-            #2 because oneside sqrt(1.5) for hann window
+            #2 because oneside sqrt(1.5) for hann window total = *1.633
             list_fft_amplitudes = 2 * np.abs(list_fft_complex_coef_oneside) / np.sqrt(1.50)
 
             return (list_fft_amplitudes,list_frequencies_oneside)
@@ -54,12 +54,11 @@ class FeaturesExtraction:
         """
         try :
             path_raw_file = Path(path_raw_file)
-            self.logger.info(f'transforming raw file to frequencies : {file_path.name}') 
             raw_df = self.read_file(path_raw_file)
             df_output = pd.DataFrame()
             for col_name in raw_df.columns:
                 array_amplitude, array_frequency = self.time_signal_to_frequency_signal(raw_df[col_name])
-                list_freq_columns_name = [f"{col_name}_{format(freq, '.2e')}" for freq in array_frequency]
+                list_freq_columns_name = [f"{col_name}_{int(freq)}" for freq in array_frequency]
                 dictionary = {list_freq_columns_name[len_index]: array_amplitude[len_index] for len_index in range(len(list_freq_columns_name))}
                 df_temp = pd.DataFrame(dictionary, index=[0])
                 df_output = pd.concat([df_output,df_temp], axis=1)
