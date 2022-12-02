@@ -36,11 +36,14 @@ from bearings_preventive_maintenance_model import BuildModel
 def main() :
     timestr = time.strftime("%Y%m%d-%H%M%S")
     build_model = BuildModel(logger)
+    logger.info(f"building new dataframe from folder: {input_path}")
     df_train = build_model.build_train_dataframe(input_path)
-    # df_train.to_json(output_path / 'df_train.json', orient="split", index=False)    
+    # df_train.to_json(output_path / 'df_train.json', orient="split", index=False)
+    logger.info(f"saving dataframe to : {output_path/ f'df_train_{timestr}.csv'}")
+    logger.info(f"saving dataframe to : {output_path/ f'df_train_label{timestr}.csv'}")     
     df_train.drop(["cycle_before_break","date"], axis=1).to_csv(output_path/ f'df_train_{timestr}.csv', index=False)
     df_train[["file_id", "cycle_before_break"]].to_csv(output_path/ f'df_train_label_{timestr}.csv', index=False)   
-    
+    logger.info(f"building done : good job!!!") 
 if __name__ == "__main__":
     main()
 

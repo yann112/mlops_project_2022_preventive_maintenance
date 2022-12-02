@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import numpy as np
-from scipy.fft import rfft, rfftfreq
+from scipy.fft import fft, fftfreq
 import pandas as pd
 from scipy import signal
 import matplotlib.pyplot as plt
@@ -35,17 +35,18 @@ class FeaturesExtraction:
         try :
             serie_amplitude = serie_amplitude.head(20000)
             int_length_data = serie_amplitude.shape[0]
+            int_oneside = int_length_data//2
             window = signal.windows.hann(int_length_data)
-            list_frequencies_oneside = rfftfreq(int_length_data, 1 / self.float_sampling_rate)
-            list_fft_complex_coef_oneside = rfft(serie_amplitude.to_numpy() * window)
+            list_frequencies = fftfreq(int_length_data, 1 / self.float_sampling_rate)[:int_oneside]
+            list_fft_complex_coef = fft(serie_amplitude.to_numpy() * window)
             #2 because oneside sqrt(1.5) for hann window total = *1.633
-            list_fft_amplitudes = 2 * np.abs(list_fft_complex_coef_oneside) / np.sqrt(1.50)
+            list_fft_amplitudes = 2 * np.abs(list_fft_complex_coef)[:int_oneside] / np.sqrt(1.50)
 
-            return (list_fft_amplitudes,list_frequencies_oneside)
+            return (list_fft_amplitudes,list_frequencies)
 
         except Exception as e:
             self.logger.error(f'{e}')
-
+ 
     
     def transform_raw_file_to_frequency_df(self,path_raw_file):
         """
@@ -60,7 +61,7 @@ class FeaturesExtraction:
                 array_amplitude, array_frequency = self.time_signal_to_frequency_signal(raw_df[col_name])
                 list_freq_columns_name = [f"{col_name}_{int(freq)}" for freq in array_frequency]
                 dictionary = {list_freq_columns_name[len_index]: array_amplitude[len_index] for len_index in range(len(list_freq_columns_name))}
-                df_temp = pd.DataFrame(dictionary, index=[0])
+                df_temp = pd.DataFrame(dictionary, index=[0]).astype('float16')
                 df_output = pd.concat([df_output,df_temp], axis=1)
                 
             str_file_name = path_raw_file.parts[-1]
