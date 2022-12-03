@@ -1,0 +1,10 @@
+pandas
+scipy
+scikit-learn
+matplotlib
+numpy
+requests
+fastapi
+uvicorn
+pathlib
+auto-sklearn

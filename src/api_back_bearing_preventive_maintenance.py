@@ -9,8 +9,9 @@ from pathlib import Path
 import sys
 
 ###path###
-root_path = Path(__file__).parents[2]
-test_path = root_path / 'mlops_project_2022_preventive_maintenance' / 'test'
+here = Path(__file__).resolve()
+path_1 = here.parents[1]
+test_path = path_1 / 'test'
 sys.path.append(str(test_path))
 
 import build_train_df

@@ -6,16 +6,18 @@ import pickle
 import pandas as pd
 
 ###path###
-root_path = Path(__file__).parents[2]
-logs_path = root_path / 'logs'
+here = Path(__file__).resolve()
+path_2 = here.parents[2]
+path_1 = here.parents[1]
+logs_path = path_2 / 'logs'
 logs_path.mkdir(parents=True, exist_ok=True)
-input_path = root_path / 'data' / 'raw_test'
+input_path = path_2 / 'data' / 'raw_test'
 input_path.mkdir(parents=True, exist_ok=True)
-output_path = root_path / 'data' / 'predict'
+output_path = path_2 / 'data' / 'predict'
 output_path.mkdir(parents=True, exist_ok=True)
-model_path = root_path / 'mlops_project_2022_preventive_maintenance' / 'model'
+model_path = path_1 / 'model'
 model_path.mkdir(parents=True, exist_ok=True)
-classes_path = root_path / 'mlops_project_2022_preventive_maintenance' / 'src' / 'classes'
+classes_path = path_1 / 'src' / 'classes'
 sys.path.append(str(classes_path))
 
 

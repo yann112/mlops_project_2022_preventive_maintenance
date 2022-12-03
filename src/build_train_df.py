@@ -3,16 +3,18 @@ from pathlib import Path
 import sys
 import logging
 import time
-import os
+
 
 ###path###
-root_path = Path(__file__).parents[2]
-logs_path = root_path / 'logs'
+here = Path(__file__).resolve()
+path_2 = here.parents[2]
+path_1 = here.parents[1]
+logs_path = path_2/ 'logs'
 logs_path.mkdir(parents=True, exist_ok=True)
-input_path = root_path / Path("data/raw_train")
-output_path = root_path / Path("data/train")
+input_path = path_2 / Path("data/raw_train")
+output_path = path_2 / Path("data/train")
 output_path.mkdir(parents=True, exist_ok=True)
-classes_path = root_path / 'mlops_project_2022_preventive_maintenance' / 'src' / 'classes'
+classes_path = path_1 / 'src' / 'classes'
 sys.path.append(str(classes_path))
 
 
