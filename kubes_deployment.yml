@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bearing-pyventive-deployment
+  labels:
+    app: bearing-pyventive-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bearing-pyventive-api
+  template:
+    metadata:
+      labels:
+        app: bearing-pyventive-api
+    spec:
+      containers:
+      - name: bearing-pyventive-api
+        image: yann112/bearing_pyventive:1.0.0
+        ports:
+        - containerPort: 8000
+
+
+

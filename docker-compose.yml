@@ -2,7 +2,7 @@ version: '3.9'
 services:
     
   api_bearing_pyventive:
-    image: bearing_pyventive:1.0.0
+    image: yann112/bearing_pyventive:1.0.0
     container_name: api_bearing_pyventive
     ports:
     - target: 8000

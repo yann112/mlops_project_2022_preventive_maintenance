@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bearing-pyventive-api
+  labels:
+    app: bearing-pyventive-api
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: bearing-pyventive-api

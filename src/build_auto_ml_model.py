@@ -41,7 +41,7 @@ def main():
         build_model = BuildModel(logger)
         train_dataframe = input_path / 'df_train.csv'
         label_dataframe = input_path / 'df_train_label.csv'
-        model = build_model.build_automl_model(train_dataframe, label_dataframe, training_time=3600)
+        model = build_model.build_automl_model(train_dataframe, label_dataframe, training_time=3600*5)
         with open(output_path / 'model', 'wb') as f:
             pickle.dump(model, f, pickle.HIGHEST_PROTOCOL)
         
