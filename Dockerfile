@@ -1,6 +1,6 @@
-FROM debian:latest
+FROM debian:stable-slim
 COPY requirements.txt requirements.txt
-RUN apt-get update && apt-get install python3-pip -y && pip3 install -r requirements.txt
+RUN  apt-get -y update && apt-get -y install python3-pip && pip install -r requirements.txt
 RUN mkdir /home/app
 WORKDIR /home/app
 COPY . /home/app
