@@ -12,9 +12,10 @@ from sklearn.model_selection import train_test_split
 from autosklearn.regression import AutoSklearnRegressor
 from sklearn.preprocessing import RobustScaler
 from sklearn.pipeline import make_pipeline
+import logging 
 
 class FeaturesExtraction:
-    def __init__(self, logger):
+    def __init__(self, logger=logging.getLogger(__name__)):
         self.float_sampling_rate = 20000 #Hz
         self.logger = logger
         
@@ -81,7 +82,7 @@ class FeaturesExtraction:
 
             
 class BuildModel:
-    def __init__(self, logger):
+    def __init__(self, logger=logging.getLogger(__name__)):
         self.logger = logger
 
     def build_train_dataframe(self,path_to_files):
@@ -96,7 +97,7 @@ class BuildModel:
             self.logger.info(f"{len(list_train_files)} training files available")
             df_train = pd.DataFrame()
             self.logger.info(f"Extracting features")
-            Features_Extraction = FeaturesExtraction(self.logger)
+            Features_Extraction = FeaturesExtraction()
             for file_raw in list_train_files :
                 df_temp = Features_Extraction.transform_raw_file_to_frequency_df(file_raw)
                 df_train = df_train.append(df_temp)
