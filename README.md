@@ -54,7 +54,7 @@ Les données de chaque enregistrement sont disponibles dans un fichier texte sou
 ###corrélations
 On peut voir sur l'image suivante qu'il y a des corrélations assez bonnes entre une hypothèse de dégradation linéaire et l'analyse vibratoire pour le roulement 3, notamment dans les fréquences autour de 1000 hz.
 
-<img src="https://drive.google.com/file/d/1VzVZuTLcIBsijoFpI9g_6UvL3s_ULe1L/view?usp=share_link">
+![image]("https://drive.google.com/file/d/1VzVZuTLcIBsijoFpI9g_6UvL3s_ULe1L/view?usp=share_link")
 
 
 ## API BACKEND
