@@ -51,8 +51,8 @@ Les données de chaque enregistrement sont disponibles dans un fichier texte sou
 
 - Enfin une normalisation est effectuée et un modèle auto-ml est entraîné.
 
-###corrélations
-On peut voir sur l'image suivante qu'il y a des corrélations assez bonnes entre une hypothèse de dégradation linéaire et l'analyse vibratoire pour le roulement 3, notamment dans les fréquences autour de 1000 hz.
+### corrélations
+On peut voir sur l'image suivante qu'il y a des corrélations assez bonnes entre une hypothèse de dégradation linéaire et l'analyse vibratoire pour le roulement 2, notamment dans les fréquences autour de 1000 hz.
 
 <img src="https://lh6.googleusercontent.com/MMU33ZPe_7ZjWH8-SEw36e9fjubxiJ68LsAdXzut2hObeNn2nP71I73XHye-QlX_QKE=w2400">
 
