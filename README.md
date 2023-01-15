@@ -14,7 +14,7 @@ L’objectif de ce projet est de déployer et maintenir un modèle de machine le
 
 ## Architecture générale
 
-###stack technique
+### stack technique
 
 La partie MLOPS ne comprend pas le front-end ni la mise en place de la base de données.
 
