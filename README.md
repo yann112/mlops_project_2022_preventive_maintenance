@@ -30,23 +30,23 @@ la stack technique utilisée sur ce projet est :
 
 <img src="https://docs.google.com/drawings/d/e/2PACX-1vRj-5h1rHX8isxGqMO7E-lkkDAcw6aEvzaTmAAYqUbyk560HHfPMG9I_TprmYOmk0IWF43FSqc0tPuK/pub?w=756&amp;h=378">
 
-###structure des dossiers
+### structure des dossiers
 
-├── data
-│   ├── predict
-│   ├── raw
-│   └── refined
-├── logs
-├── pyventive_maintenance
-│   ├── model
-│   ├── setting
-│   ├── src
-│   │   ├── classes
-│   └── test
-│       ├── auto_ml_model_test
-│       ├── raw_train_test
-│       └── train_df_test
-└── temp
+├── data  
+│   ├── predict  
+│   ├── raw  
+│   └── refined  
+├── logs  
+├── pyventive_maintenance  
+│   ├── model  
+│   ├── setting  
+│   ├── src  
+│   │   ├── classes  
+│   └── test  
+│       ├── auto_ml_model_test  
+│       ├── raw_train_test  
+│       └── train_df_test  
+└── temp  
 
 Les dossiers data, logs et temp seront partagés entre les containeurs.
 ## le modèle
