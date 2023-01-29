@@ -10,7 +10,7 @@ services:
       protocol: tcp
       mode: host
     volumes:
-      - ~/data
-      - ~/log
-      - ~/temp
+      - ../data:/home/data
+      - ../logs:/home/logs
+      - ../temp:/home/temp
 
