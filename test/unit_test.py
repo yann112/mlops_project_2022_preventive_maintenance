@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.classes.bearings_preventive_maintenance_model import FeaturesExtraction 
+from classes.bearings_preventive_maintenance_model import FeaturesExtraction 
 
 
 

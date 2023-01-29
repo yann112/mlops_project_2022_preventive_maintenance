@@ -9,5 +9,8 @@ services:
       published: 8000
       protocol: tcp
       mode: host
-
+    volumes:
+      - ~/data
+      - ~/log
+      - ~/temp
 
